@@ -1,9 +1,11 @@
 import { ClerkProvider, UserButton } from '@clerk/nextjs'
 import React from 'react'
+import WelcomeBanner from './_components/WelcomeBanner'
 
 function Dashboard() {
   return (
-    <div>page
+    <div>
+      <WelcomeBanner/>
             
     </div>
    
