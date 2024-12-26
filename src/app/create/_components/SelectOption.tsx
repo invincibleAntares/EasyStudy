@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-function SelectOption() {
+function SelectOption({selectedStudyType}) {
   const Options =[
     {
       name: 'Exam',
@@ -34,10 +34,11 @@ function SelectOption() {
         <div key={index} className={`p-4 flex flex-col items-center justify-center border rounded-xl
           hover:border-primary cursor-pointer
           ${selectedOption === option.name ? 'border-primary' : 'border-gray-200'}`}
-             onClick={()=> setSelectedOption(option.name)}
+              onClick={()=> {setSelectedOption(option.name);
+                   selectedStudyType(option.name)
+              }}
              
-             >
-              <Image src={option.icon} alt={option.name} width={50} height={50}/>
+             >              <Image src={option.icon} alt={option.name} width={50} height={50}/>
               <h2 className='text-sm mt-2'>{option.name}</h2>
               
             </div>

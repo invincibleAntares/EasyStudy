@@ -33,7 +33,9 @@ function Sidebar() {
             </div> 
           
           <div className='mt-10'>
+            <Link href={'/create'} className='w-full'>
             <Button className='w-full'>+ Create New</Button>
+            </Link>
              <div className='mt-5'>
                 {MenuList.map((menu,index)=>(
                     <div key={index} className={`flex gap-5 items-center p-3
