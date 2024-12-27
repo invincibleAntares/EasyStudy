@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function Create() {
   const [step, setStep] = useState(0);
@@ -49,6 +50,9 @@ function Create() {
       setLoading(false);
 
       router.replace('/dashboard');
+      // Toast Notification 
+      toast("Your Course Content is generating, Click on Refresh Button")
+
 
         console.log('API Response:', response.data.result.resp);
     } catch (error) {
