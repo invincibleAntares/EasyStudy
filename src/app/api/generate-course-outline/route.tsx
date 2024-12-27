@@ -2,6 +2,7 @@
 import { courseOutlineAiModel } from "@/configs/Aimodel";
 import { db } from "@/configs/db";
 import { STUDY_MATERIAL_TABLE } from "@/configs/schema";
+import { inngest } from "@/inngest/client";
 import { NextResponse } from "next/server";
 
 
@@ -16,8 +17,16 @@ export async function POST(req) {
             );
         }
        
-        const PROMPT = `Generate a study material for ${courseType} for ${topic} and level of difficulty will be ${difficultyLevel} with summary of course, List of Chapters along with summary for each chapter, Topic list in each chapter, All result in JSON format`;
-      
+        const PROMPT = `Generate a study material for a course titled "${courseType}" focused on the topic "${topic}" at a "${difficultyLevel}" level of difficulty.  
+
+        The output should include:
+        1. a good title of course based on the input topic but good version one int 4 to 5 words  
+        2. A detailed course summary not too long, not include chapter name just the summry
+        3. A structured list of chapters, each with a brief summary highlighting its focus and purpose.  
+        4. A detailed list of topics covered in each chapter to give a clear roadmap of the course contents.  
+        
+        Provide all results in JSON format, ensuring the structure is clear, well-organized, and learner-friendly.`;
+        
         const aiResp = await courseOutlineAiModel.sendMessage(PROMPT);
         const aiResult = JSON.parse(aiResp.response.text());
 
@@ -28,6 +37,16 @@ export async function POST(req) {
             topic,
             courseLayout: aiResult,
         }).returning({resp:STUDY_MATERIAL_TABLE});
+
+        // Triger the Ingest function to generate notes
+
+        const result = await inngest.send({
+            name: 'notes.generate',
+            data: {
+                course: dbResult[0].resp
+            }
+        })
+        console.log(result);
 
         return NextResponse.json({ result: dbResult[0] });
     } catch (error) {

@@ -47,7 +47,7 @@ function Sidebar() {
              </div>
           </div>
           <div className='border p-3 bg-slate-100 rounded-lg
-           absolute bottom-10 w-[95%]'>
+           absolute bottom-10 w-[85%] justify-between'>
             <h2 className='text-lg mb-2'>Available credits: 5</h2>
             <Progress value ={40}/>
             <h2 className='text-sm'> 1 out of 5 credits left</h2>

@@ -36,6 +36,26 @@ const {
         },
       ],
     });
+
+
+   export  const generateNotesAiModel = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: "Generate exam material detail content for each chapter. Make sure to include all topic points in the content, make sure to give content in HTML format (Do not Add HTML, Head, Body, title tag). The chapters:\"chapters\": [\n    {\n      \"chapterTitle\": \"Object-Oriented Programming (OOP) in C++\",\n      \"chapterSummary\": \"This chapter delves into the core principles of OOP in C++, including classes, objects, inheritance, polymorphism, and encapsulation.  We'll explore how to design efficient and maintainable C++ code using OOP principles.\",\n      \"topics\": [\n        \"Classes and Objects\",\n        \"Constructors and Destructors\",\n        \"Inheritance (Single, Multiple, Multilevel, Hierarchical)\",\n        \"Polymorphism (Virtual Functions, Abstract Classes)\",\n        \"Encapsulation and Data Hiding\",\n        \"Access Specifiers (public, private, protected)\",\n        \"OOP Design Patterns (Introduction to Singleton, Factory)\"\n      ]\n    },"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "```html\n<div>\n  <h2>Object-Oriented Programming (OOP) in C++</h2>\n  <p>This chapter covers the fundamental concepts of Object-Oriented Programming (OOP) in C++.  Understanding these principles is crucial for writing efficient, reusable, and maintainable C++ code.</p>\n\n  <h3>Classes and Objects</h3>\n  <p>This section explains the definition and declaration of classes, the building blocks of OOP.  It covers member variables (data) and member functions (methods) and how to create objects (instances) of a class.  Examples will demonstrate how to define classes and instantiate objects.</p>\n\n  <h3>Constructors and Destructors</h3>\n  <p>Learn about constructors, special member functions automatically called when an object is created.  We will cover different types of constructors (default, parameterized, copy) and their usage.  Destructors, which are called when an object is destroyed, will also be explained, emphasizing resource management and memory cleanup.</p>\n\n  <h3>Inheritance (Single, Multiple, Multilevel, Hierarchical)</h3>\n  <p>This section explores the concept of inheritance, enabling code reuse and creating class hierarchies. We'll examine single inheritance (one base class), multiple inheritance (multiple base classes), multilevel inheritance (a chain of inheritance), and hierarchical inheritance (multiple derived classes from a single base class).  The importance of base classes and derived classes will be emphasized along with examples demonstrating each type of inheritance.</p>\n\n  <h3>Polymorphism (Virtual Functions, Abstract Classes)</h3>\n  <p>Polymorphism allows objects of different classes to be treated as objects of a common type.  This section covers virtual functions, which enable runtime polymorphism, and abstract classes, which cannot be instantiated directly but serve as blueprints for derived classes. The use of virtual functions to achieve dynamic dispatch will be demonstrated, along with examples of abstract classes and pure virtual functions.</p>\n\n  <h3>Encapsulation and Data Hiding</h3>\n  <p>Encapsulation is the bundling of data and methods that operate on that data within a class.  Data hiding protects the internal state of an object from unauthorized access. This section explains the benefits of encapsulation and how to achieve it using access specifiers.</p>\n\n  <h3>Access Specifiers (public, private, protected)</h3>\n  <p>This section details the three access specifiers in C++: `public`, `private`, and `protected`.  We'll explain how each specifier controls the accessibility of class members from other parts of the program.  Examples will illustrate the differences in access levels and their implications for data protection and code organization.</p>\n\n  <h3>OOP Design Patterns (Introduction to Singleton, Factory)</h3>\n  <p>This section provides an introduction to the concept of design patterns.  It focuses on two common patterns: the Singleton pattern (ensuring only one instance of a class exists) and the Factory pattern (creating objects without specifying their concrete classes).  Simple examples of each pattern will be provided, showing how they can be implemented in C++.</p>\n</div>\n```\n"},
+          ],
+        },
+      ],
+    });
+  
   
     // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
     // console.log(result.response.text());
