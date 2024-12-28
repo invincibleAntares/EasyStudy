@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import CourseIntroCard from './_components/CourseIntroCard';
+import StudyMaterialSection from './_components/StudyMaterialSection';
+import ChapterList from './_components/ChapterList';
 
 function Course() {
     const {courseId} = useParams();
@@ -25,10 +27,9 @@ function Course() {
         <CourseIntroCard course ={course}/>
 
        {/** Study Materials Options */}
-
-
-
+            <StudyMaterialSection/>
        {/** Chapter List */}
+        <ChapterList course ={course}/>
        </div>   
     </div>
   )
