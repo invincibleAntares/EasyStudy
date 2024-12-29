@@ -1,7 +1,11 @@
-import React from 'react'
+ 'use client'
+import React, { useEffect, useState } from 'react'
 import MaterialCardItem from './MaterialCardItem'
+import axios from 'axios'
 
-function StudyMaterialSection() {
+function StudyMaterialSection({courseId}) {
+    
+   const [studyTypeContent, setStudyTypeContent] = useState();
     const MaterialList = [
        {
         name: 'Notes/Chapters',
@@ -28,6 +32,20 @@ function StudyMaterialSection() {
             path: '/qa'
          }
     ]
+
+
+     useEffect(()=>{
+          GetStudyMaterial();
+     },[])
+     
+      const GetStudyMaterial = async()=>{
+        const result = await axios.post('/api/study-type',{
+          courseId: courseId,
+          studyType: 'ALL'
+        })
+        console.log(result?.data);
+        setStudyTypeContent(result.data);
+      }
 
   return (
     <div className='mt-5'>
