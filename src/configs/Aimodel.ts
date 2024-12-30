@@ -56,6 +56,25 @@ const {
       ],
     });
   
+
+    export   const GenerateStudyTypeContentAiModel = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: "Generate the flashcard on topic: Flutter Fundamentals, User Interface (UI) Development, Basic App Navigation in JSON format with front back content, Maximum 15"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "```json\n[\n  {\n    \"front\": \"What is a Widget in Flutter?\",\n    \"back\": \"The fundamental building block of a Flutter UI. Everything you see on the screen is a widget.\"\n  },\n  {\n    \"front\": \"What are the two main types of widgets?\",\n    \"back\": \"StatelessWidget and StatefulWidget.\"\n  },\n  {\n    \"front\": \"What is the difference between StatelessWidget and StatefulWidget?\",\n    \"back\": \"StatelessWidget: immutable, doesn't change after creation. StatefulWidget: mutable, can update its UI.\"\n  },\n  {\n    \"front\": \"What is a MaterialApp widget?\",\n    \"back\": \"A widget that provides many common Material Design features to an app, including a navigation bar and theme.\"\n  },\n  {\n    \"front\": \"What is Scaffold widget?\",\n    \"back\": \"A basic layout structure for Material Design apps, providing app bar, body, and bottom navigation.\"\n  },\n  {\n    \"front\": \"How do you create a simple Text widget?\",\n    \"back\": \"```dart\\nText('Hello World!')\\n```\"\n  },\n  {\n    \"front\": \"How to display an image in Flutter?\",\n    \"back\": \"Use the `Image.network()` or `Image.asset()` widget.\"\n  },\n  {\n    \"front\": \"What is a `Container` widget?\",\n    \"back\": \"A widget that allows you to decorate a child widget with padding, margins, background colors, etc.\"\n  },\n  {\n    \"front\": \"What is `Row` and `Column`?\",\n    \"back\": \"Widgets used to arrange children horizontally (Row) or vertically (Column).\"\n  },\n  {\n    \"front\": \"What is `Expanded` widget?\",\n    \"back\": \"Used within `Row` or `Column` to allow a child to take up available space.\"\n  },\n  {\n    \"front\": \"How to navigate to a new screen in Flutter?\",\n    \"back\": \"Use `Navigator.push()`.\"\n  },\n  {\n    \"front\": \"How to pass data to a new screen during navigation?\",\n    \"back\": \"Use `arguments` in `Navigator.push()` and access them in the new screen's constructor.\"\n  },\n  {\n    \"front\": \"How to return data from a new screen after navigation?\",\n    \"back\": \"Use `Navigator.pop(context, data)`\"\n  },\n  {\n    \"front\": \"What is a `Route` in Flutter?\",\n    \"back\": \"A description of how to transition between screens.\"\n  },\n  {\n    \"front\": \"What is a `MaterialPageRoute`?\",\n    \"back\": \"A type of route that uses Material Design transitions.\"\n  }\n]\n```\n"},
+          ],
+        },
+      ],
+    });
+
   
     // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
     // console.log(result.response.text());
