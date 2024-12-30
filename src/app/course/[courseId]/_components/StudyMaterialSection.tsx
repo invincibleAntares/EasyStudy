@@ -4,7 +4,7 @@ import MaterialCardItem from './MaterialCardItem'
 import axios from 'axios'
 import Link from 'next/link';
 
-function StudyMaterialSection({courseId}) {
+function StudyMaterialSection({courseId,course}) {
     
    const [studyTypeContent, setStudyTypeContent] = useState();
     const MaterialList = [
@@ -58,11 +58,12 @@ function StudyMaterialSection({courseId}) {
          
           <div className='grid grid-cols-2 md:grid-cols-4 gap-5 mt-3'>
             {MaterialList.map((item, index) => (
-                <Link key={index} href={'/course/'+courseId+item.path}>
+               
                 <MaterialCardItem key={index} item={item}
                   studyTypeContent={studyTypeContent}
+                  course ={course} refreshData={GetStudyMaterial}
                 />
-                </Link>
+        
             ))}
           </div>
 
