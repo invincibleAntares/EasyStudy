@@ -75,6 +75,25 @@ const {
       ],
     });
 
+
+    export const GenerateQuizAiModel = model.startChat({
+      generationConfig,
+      history: [
+        {
+          role: "user",
+          parts: [
+            {text: "Generate Quiz on topic: Flutter Fundamentals, User Interface (UI) Development, Basic App Navigation with Question and Options along with correct answer in JSON format"},
+          ],
+        },
+        {
+          role: "model",
+          parts: [
+            {text: "```json\n{\n  \"quizTitle\": \"Flutter Fundamentals, UI Development, and Basic Navigation\",\n  \"questions\": [\n    {\n      \"question\": \"What is the core building block of Flutter's UI?\",\n      \"options\": [\"Widget\", \"Layout\", \"Screen\", \"View\"],\n      \"answer\": \"Widget\"\n    },\n    {\n      \"question\": \"Which widget is used to arrange children in a column?\",\n      \"options\": [\"Row\", \"Column\", \"Stack\", \"Container\"],\n      \"answer\": \"Column\"\n    },\n    {\n      \"question\": \"What does the `Scaffold` widget provide?\",\n      \"options\": [\"Text styling\", \"Image loading\",  \"Basic app structure including AppBar and body\", \"Data persistence\"],\n      \"answer\": \"Basic app structure including AppBar and body\"\n    },\n    {\n      \"question\": \"Which widget is best for displaying a list of items that can be scrolled?\",\n      \"options\": [\"ListView\", \"GridView\", \"Column\", \"Row\"],\n      \"answer\": \"ListView\"\n    },\n    {\n      \"question\": \"How do you navigate to a new route in Flutter?\",\n      \"options\": [\"`Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()))`\", \"`runApp(NewScreen())`\", \"`setState()`\", \"`Navigator.pop(context)`\"],\n      \"answer\": \"`Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()))`\"\n    },\n    {\n      \"question\": \"What is the purpose of the `BuildContext`?\",\n      \"options\": [\"To store app data\", \"To access the widget tree\", \"To handle user input\", \"To define app theme\"],\n      \"answer\": \"To access the widget tree\"\n    },\n    {\n      \"question\": \"Which widget is used to create a flexible layout that adapts to different screen sizes?\",\n      \"options\": [\"Container\", \"Row\", \"Expanded\", \"Stack\"],\n      \"answer\": \"Expanded\"\n    },\n    {\n      \"question\": \"What is the difference between `StatelessWidget` and `StatefulWidget`?\",\n      \"options\": [\"`StatelessWidget` updates its UI based on state changes, while `StatefulWidget` does not.\", \"`StatefulWidget` updates its UI based on state changes, while `StatelessWidget` does not.\", \"There is no difference.\", \"One is used for text, the other for images.\"],\n      \"answer\": \"`StatefulWidget` updates its UI based on state changes, while `StatelessWidget` does not.\"\n    },\n    {\n      \"question\": \"What is the `key` property used for in widgets?\",\n      \"options\": [\"Styling\", \"Navigation\", \"Unique identification of widgets\", \"Data binding\"],\n      \"answer\": \"Unique identification of widgets\"\n    },\n    {\n      \"question\": \"What does the `MaterialApp` widget provide?\",\n      \"options\": [\"A basic app structure with material design\", \"State management\", \"Data persistence\", \"Navigation\"],\n      \"answer\": \"A basic app structure with material design\"\n    }\n  ]\n}\n```\n"},
+          ],
+        },
+      ],
+    });
+
   
     // const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
     // console.log(result.response.text());

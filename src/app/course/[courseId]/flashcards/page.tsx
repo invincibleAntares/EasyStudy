@@ -16,9 +16,20 @@ function Flashcards() {
   const {courseId} = useParams();
   const [flashcards, setFlashcards] = useState([]);
   const [isFlipped, setIsFlipped] = useState();
+  const [api, setApi] = useState();
   useEffect( ()=>{
     GetFlashCards();
   },[])
+   
+   useEffect( ()=>{
+            if(!api) return  ;
+            api.on('select',()=>{
+              setIsFlipped(false);
+            })
+
+   },[api])
+    
+   
 
   const GetFlashCards= async()=>{
    const result  = await axios.post('/api/study-type',{
@@ -36,7 +47,7 @@ function Flashcards() {
       <h2 className="font-bold text-2xl">Flashcards</h2>
       <p>Flashcards: The Ultimate Tool to Lock in Concepts! </p>
         <div className=" mt-10">  
-                    <Carousel>
+                    <Carousel setApi={setApi}>
               <CarouselContent>
                 {flashcards?.content?.length>0&&flashcards.content?.map((flashcard,index)=>(
                 <CarouselItem key={index} className="flex items-center justify-center">
