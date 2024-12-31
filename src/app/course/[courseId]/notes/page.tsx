@@ -6,12 +6,13 @@ import React, { useEffect, useState } from "react";
 
 function ViewNotes() {
   const { courseId } = useParams();
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<any[]>([]);
   const [stepCount, setStepCount] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     GetNotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const GetNotes = async () => {
@@ -20,11 +21,10 @@ function ViewNotes() {
         courseId: courseId,
         studyType: "notes",
       });
-
-      const formattedNotes = result?.data?.map((note) =>
+      const formattedNotes = (result?.data || []).map((note: any) =>
         typeof note.notes === "string" ? JSON.parse(note.notes) : note.notes
       );
-      setNotes(formattedNotes || []);
+      setNotes(formattedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
     }
@@ -44,7 +44,7 @@ function ViewNotes() {
             </Button>
           )}
 
-          {notes?.map((_, index) => (
+          {notes.map((_, index) => (
             <div
               key={index}
               className={`w-full h-2 rounded-full ${
@@ -70,10 +70,19 @@ function ViewNotes() {
           </div>
           <div className="text-gray-600">{notes[stepCount]?.chapterSummary}</div>
 
-          {notes[stepCount]?.topics && (
+          {Array.isArray(notes[stepCount]?.topics) && (
             <ul className="list-disc ml-5">
-              {notes[stepCount]?.topics.map((topic, index) => (
-                <li key={index}>{topic}</li>
+              {notes[stepCount].topics.map((topic: any, index: number) => (
+                <li key={index}>
+                  {typeof topic === "object" ? (
+                    <>
+                      <div className="font-semibold">{topic.topicTitle}</div>
+                      <div>{topic.topicContent}</div>
+                    </>
+                  ) : (
+                    topic
+                  )}
+                </li>
               ))}
             </ul>
           )}
