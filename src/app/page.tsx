@@ -95,13 +95,13 @@ export default function Home() {
       step: "Step 2",
       title: "Choose your Type of prepration and difficulty level",
       description:
-        "We’ll process your Topic and make it ready for you to Learn with various Componets.",
+        "We'll process your Topic and make it ready for you to Learn with various Components.",
     },
     {
       step: "Step 3",
       title: "Start Your Preparation",
       description:
-        "It’s that simple. Try out Easy Study today - it really takes less than a minute.",
+        "It's that simple. Try out Easy Study today - it really takes less than a minute.",
     },
   ].map((item, index) => (
     <li key={index} className="md:flex-1 flex">
