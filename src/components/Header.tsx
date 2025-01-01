@@ -15,7 +15,7 @@ function Header() {
       {/* Logo and Title */}
       <div className="flex items-center gap-2">
         <Image src="/logo.svg" alt="Easy Study Logo" width={40} height={40} />
-        <h2 className="font-semibold text-lg text-blue-600">Easy Study</h2>
+        <h2 className="font-semibold text-lg text-black-600">Easy Study</h2>
       </div>
 
       {/* Get Started Button */}
