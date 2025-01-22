@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 **EasyStudy**  
+_Empower your learning journey with AI-driven personalized study tools._  
 
-## Getting Started
+EasyStudy is a modern web application designed to simplify exam preparation, interview readiness, and coding practice. Built with cutting-edge technologies like Next.js and AI, it delivers personalized study materials through an intuitive and user-friendly interface.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ **Features**  
+- 🎯 **Personalized Study Materials**: Generate tailored content based on topics and difficulty levels.  
+- 📖 **Multiple Study Formats**:  
+  - Interactive Flashcards  
+  - Comprehensive Quiz System  
+  - Detailed Study Notes  
+- 📊 **Progress Tracking**: Monitor your learning journey and milestones.  
+- 🔒 **Secure Authentication**: Powered by Clerk for seamless account management.  
+- 📱 **Responsive Design**: Optimized for mobile, tablet, and desktop.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
+🚀 Usage
+Create an Account
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sign up using your email or social accounts.
+Complete your profile setup.
+Generate Study Materials
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Choose your study type (Exam, Interview, or Coding).
+Enter your topic and preferred difficulty level.
+Select a study format (Notes, Flashcards, or Quiz).
+Start Learning
 
-## Learn More
+Access generated materials via your dashboard.
+Track your progress.
+Revise and review with different formats.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠 **Technologies Used**  
+### **Frontend**  
+- 🌐 Next.js `15.1.2`  
+- ⚛️ React `18.3.1`  
+- 🎨 Tailwind CSS  
+- 🖱️ Radix UI Components  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **Backend**  
+- 🤖 Google Generative AI  
+- 🗂️ Drizzle ORM  
+- 🛢️ Neon Database  
+- 🔄 Inngest (Background Processing)  
 
-## Deploy on Vercel
+### **Authentication**  
+- 🔑 Clerk  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Made with ❤️ by Abhishekkumar
