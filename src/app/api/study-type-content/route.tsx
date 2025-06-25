@@ -1,16 +1,18 @@
 import { db } from "@/configs/db";
 import { STUDY_TYPE_CONTENT_TABLE } from "@/configs/schema";
-import { inngest } from "@/inngest/client";
 import { NextResponse } from "next/server";
+import { GenerateQuizAiModel, GenerateStudyTypeContentAiModel, GenerateQAAiModel } from "@/configs/Aimodel";
+import { eq } from "drizzle-orm";
 
-export async function POST(req){
+export async function POST(req: Request){
     const {chapters,courseId,type} = await req.json();
 
     const PROMPT = type=='Flashcard'?
-    
-    "Generate the flashcard on topic:"+chapters + "  in JSON format with front back content, Maximum 15"
-    :
-    "Generate the Quiz on topic:"+chapters + "  in JSON format with question and answer, Maximum 15";
+        "Generate the flashcard on topic:"+chapters + "  in JSON format with front back content, Maximum 15"
+        : type=='Quiz'?
+        "Generate the Quiz on topic:"+chapters + "  in JSON format with question and answer, Maximum 15"
+        :
+        "Generate comprehensive Question and Answer pairs on topic:"+chapters + "  in JSON format with detailed questions and comprehensive answers that help in exam preparation and interview practice, Maximum 15";
      // Insert Record to DB, Update status to Generating...
 
      const result = await db.insert(STUDY_TYPE_CONTENT_TABLE).values({
@@ -18,17 +20,21 @@ export async function POST(req){
        type: type
      }).returning({ id: STUDY_TYPE_CONTENT_TABLE.id});
 
-           // Trigger Ingest Function
+     // Generate content using AI (previously done by Inngest)
+     const aiResult = type == 'Flashcard'?
+       await GenerateStudyTypeContentAiModel.sendMessage(PROMPT)
+       : type == 'Quiz'?
+       await GenerateQuizAiModel.sendMessage(PROMPT)
+       :
+       await GenerateQAAiModel.sendMessage(PROMPT);
+     const AIResult = JSON.parse(aiResult.response.text());
 
-           const result_ = await   inngest.send({
-            name: 'studyType.content',
-            data: {
-                studyType: type,
-                prompt: PROMPT,
-                courseId: courseId,
-                recordId: result[0].id
-            }
-           })
+     // Save the result to DB
+     await db.update(STUDY_TYPE_CONTENT_TABLE)
+       .set({
+         content: AIResult,
+         status:'Ready'
+       }).where(eq(STUDY_TYPE_CONTENT_TABLE.id, result[0].id));
 
-           return NextResponse.json(result[0].id)
+     return NextResponse.json(result[0].id)
 }

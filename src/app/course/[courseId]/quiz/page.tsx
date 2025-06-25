@@ -8,15 +8,10 @@ import QuizCardItem from "./_components/QuizCardItem";
 
 function Quiz() {
   const { courseId } = useParams();
-  const [quizdata, setQuizData] = useState<any>();
   const [quiz, setQuiz] = useState<any[]>([]);
   const [stepCount, setStepCount] = useState(0);
   const [correctAns, setCorrectAns] = useState<boolean | null>(null);
   const [correctOption, setCorrectOption] = useState<string | null>(null);
-
-  useEffect(() => {
-    GetQuiz();
-  }, []);
 
   const GetQuiz = async () => {
     const result = await axios.post('/api/study-type', {
@@ -24,9 +19,12 @@ function Quiz() {
       studyType: 'Quiz',
     });
 
-    setQuizData(result.data);
     setQuiz(result.data?.content?.questions || []);
   };
+
+  useEffect(() => {
+    GetQuiz();
+  }, [courseId]);
 
   const checkAnswer = (userAnswer: string, currentQuestion: any) => {
     if (userAnswer === currentQuestion.answer) {

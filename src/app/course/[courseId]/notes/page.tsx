@@ -21,9 +21,26 @@ function ViewNotes() {
         courseId: courseId,
         studyType: "notes",
       });
-      const formattedNotes = (result?.data || []).map((note: any) =>
-        typeof note.notes === "string" ? JSON.parse(note.notes) : note.notes
-      );
+      
+      // Get course data to extract chapter info
+      const courseResult = await axios.get(`/api/courses?courseId=${courseId}`);
+      const course = courseResult.data.result;
+      const chapters = course?.courseLayout?.chapters || [];
+      
+      const formattedNotes = (result?.data || []).map((note: any, index: number) => {
+        // Notes are stored as HTML strings, so we don't need to parse them as JSON
+        // Instead, we combine the chapter info with the HTML content
+        const chapter = chapters[note.chapterId] || chapters[index] || {};
+        return {
+          chapterId: note.chapterId || index,
+          chapterTitle: chapter.chapterTitle || `Chapter ${index + 1}`,
+          chapterSummary: chapter.chapterSummary || '',
+          emoji: chapter.emoji || '📚',
+          topics: chapter.topics || [],
+          content: note.notes // This is the HTML content
+        };
+      });
+      
       setNotes(formattedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);

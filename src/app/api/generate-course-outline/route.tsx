@@ -1,12 +1,10 @@
-
-import { courseOutlineAiModel } from "@/configs/Aimodel";
+import { courseOutlineAiModel, generateNotesAiModel } from "@/configs/Aimodel";
 import { db } from "@/configs/db";
-import { STUDY_MATERIAL_TABLE } from "@/configs/schema";
-import { inngest } from "@/inngest/client";
+import { STUDY_MATERIAL_TABLE, CHAPTER_NOTES_TABLE } from "@/configs/schema";
 import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 
-
-export async function POST(req) {
+export async function POST(req: Request) {
     try {
         const { courseId, topic, courseType, difficultyLevel, createdBy } = await req.json();
 
@@ -31,25 +29,39 @@ export async function POST(req) {
         const aiResp = await courseOutlineAiModel.sendMessage(PROMPT);
         const aiResult = JSON.parse(aiResp.response.text());
 
-        const dbResult = await db.insert(STUDY_MATERIAL_TABLE).values({
+        await db.insert(STUDY_MATERIAL_TABLE).values({
             courseId,
             courseType,
             createdBy,
             topic,
             courseLayout: aiResult,
-        }).returning({resp:STUDY_MATERIAL_TABLE});
+        });
 
-        // Triger the Ingest function to generate notes
+        // Generate Notes for Each Chapter with AI in parallel for better performance
+        const chapters = aiResult?.chapters;
+        if (chapters) {
+            const notesPromises = chapters.map(async (chapter: any, index: number) => {
+                const NOTES_PROMPT = 'Generate exam material detail content for each chapter. Make sure to include all topic points in the content, make sure to give content in HTML format (Do not Add HTML, Head, Body, title tag). The chapters:' + JSON.stringify(chapter);
+                const result = await generateNotesAiModel.sendMessage(NOTES_PROMPT);
+                const aiResp = result.response.text();
 
-        const result = await inngest.send({
-            name: 'notes.generate',
-            data: {
-                course: dbResult[0].resp
-            }
-        })
-        console.log(result);
+                return db.insert(CHAPTER_NOTES_TABLE).values({
+                    chapterId: index,
+                    courseId: courseId,
+                    notes: aiResp
+                });
+            });
 
-        return NextResponse.json({ result: dbResult[0] });
+            // Execute all chapter note generation in parallel
+            await Promise.all(notesPromises);
+        }
+
+        // Update status to 'Ready'
+        await db.update(STUDY_MATERIAL_TABLE).set({
+            status: 'Ready'
+        }).where(eq(STUDY_MATERIAL_TABLE.courseId, courseId));
+
+        return NextResponse.json({ result: { courseId, status: 'Ready' } });
     } catch (error) {
         console.error('Error processing request:', error);
         return NextResponse.json(
