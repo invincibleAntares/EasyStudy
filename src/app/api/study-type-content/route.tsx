@@ -11,6 +11,8 @@ export async function POST(req: Request){
         "Generate the flashcard on topic:"+chapters + "  in JSON format with front back content, Maximum 15"
         : type=='Quiz'?
         "Generate the Quiz on topic:"+chapters + "  in JSON format with question and answer, Maximum 15"
+        : type=='Notes'?
+        "Generate comprehensive study notes for the topic:"+chapters + ". Create detailed notes in JSON format with chapters array, each containing chapterTitle, chapterSummary, topics array, and detailed content in HTML format (no HTML, head, body tags). Make it comprehensive for exam preparation."
         :
         "Generate comprehensive Question and Answer pairs on topic:"+chapters + "  in JSON format with detailed questions and comprehensive answers that help in exam preparation and interview practice, Maximum 15";
      // Insert Record to DB, Update status to Generating...
@@ -24,6 +26,8 @@ export async function POST(req: Request){
      const aiResult = type == 'Flashcard'?
        await GenerateStudyTypeContentAiModel.sendMessage(PROMPT)
        : type == 'Quiz'?
+       await GenerateQuizAiModel.sendMessage(PROMPT)
+       : type == 'Notes'?
        await GenerateQuizAiModel.sendMessage(PROMPT)
        :
        await GenerateQAAiModel.sendMessage(PROMPT);

@@ -15,6 +15,7 @@ function MaterialCardItem({item,studyTypeContent,course,refreshData}: any) {
         case 'Flashcard': return 'Flashcard';
         case 'Quiz': return 'Quiz';
         case 'Question/Answer': return 'QA';
+        case 'Notes': return 'Notes';
         default: return itemName;
       }
     };
