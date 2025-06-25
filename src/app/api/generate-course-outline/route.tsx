@@ -1,8 +1,7 @@
-import { courseOutlineAiModel, generateNotesAiModel } from "@/configs/Aimodel";
+import { courseOutlineAiModel } from "@/configs/Aimodel";
 import { db } from "@/configs/db";
-import { STUDY_MATERIAL_TABLE, CHAPTER_NOTES_TABLE } from "@/configs/schema";
+import { STUDY_MATERIAL_TABLE } from "@/configs/schema";
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
     try {
@@ -35,31 +34,8 @@ export async function POST(req: Request) {
             createdBy,
             topic,
             courseLayout: aiResult,
+            status: 'Ready' // Set to ready immediately since we're not generating notes here anymore
         });
-
-        // Generate Notes for Each Chapter with AI in parallel for better performance
-        const chapters = aiResult?.chapters;
-        if (chapters) {
-            const notesPromises = chapters.map(async (chapter: any, index: number) => {
-                const NOTES_PROMPT = 'Generate exam material detail content for each chapter. Make sure to include all topic points in the content, make sure to give content in HTML format (Do not Add HTML, Head, Body, title tag). The chapters:' + JSON.stringify(chapter);
-                const result = await generateNotesAiModel.sendMessage(NOTES_PROMPT);
-                const aiResp = result.response.text();
-
-                return db.insert(CHAPTER_NOTES_TABLE).values({
-                    chapterId: index,
-                    courseId: courseId,
-                    notes: aiResp
-                });
-            });
-
-            // Execute all chapter note generation in parallel
-            await Promise.all(notesPromises);
-        }
-
-        // Update status to 'Ready'
-        await db.update(STUDY_MATERIAL_TABLE).set({
-            status: 'Ready'
-        }).where(eq(STUDY_MATERIAL_TABLE.courseId, courseId));
 
         return NextResponse.json({ result: { courseId, status: 'Ready' } });
     } catch (error) {

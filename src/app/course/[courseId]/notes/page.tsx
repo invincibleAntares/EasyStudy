@@ -8,6 +8,8 @@ function ViewNotes() {
   const { courseId } = useParams();
   const [notes, setNotes] = useState<any[]>([]);
   const [stepCount, setStepCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -15,8 +17,35 @@ function ViewNotes() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const generateNotesForCourse = async (course: any) => {
+    setGenerating(true);
+    try {
+      const chapters = course?.courseLayout?.chapters || [];
+      
+      // Generate notes for each chapter one by one
+      for (let index = 0; index < chapters.length; index++) {
+        const chapter = chapters[index];
+        const NOTES_PROMPT = 'Generate exam material detail content for each chapter. Make sure to include all topic points in the content, make sure to give content in HTML format (Do not Add HTML, Head, Body, title tag). The chapters:' + JSON.stringify(chapter);
+        
+        await axios.post('/api/generate-notes', {
+          courseId: courseId,
+          chapterId: index,
+          prompt: NOTES_PROMPT
+        });
+      }
+      
+      // Refresh notes after generation
+      await GetNotes();
+    } catch (error) {
+      console.error("Error generating notes:", error);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   const GetNotes = async () => {
     try {
+      setLoading(true);
       const result = await axios.post("/api/study-type", {
         courseId: courseId,
         studyType: "notes",
@@ -26,6 +55,14 @@ function ViewNotes() {
       const courseResult = await axios.get(`/api/courses?courseId=${courseId}`);
       const course = courseResult.data.result;
       const chapters = course?.courseLayout?.chapters || [];
+      
+      // Check if notes exist
+      if (!result.data || result.data.length === 0) {
+        // No notes exist, generate them
+        setLoading(false);
+        await generateNotesForCourse(course);
+        return;
+      }
       
       const formattedNotes = (result?.data || []).map((note: any, index: number) => {
         // Notes are stored as HTML strings, so we don't need to parse them as JSON
@@ -44,8 +81,25 @@ function ViewNotes() {
       setNotes(formattedNotes);
     } catch (error) {
       console.error("Error fetching notes:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  // Show loading state
+  if (loading || generating) {
+    return (
+      <div className="p-5 text-center">
+        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+        <h2 className="text-xl font-semibold mb-2">
+          {generating ? 'Generating Notes...' : 'Loading Notes...'}
+        </h2>
+        <p className="text-gray-600">
+          {generating ? 'Please wait while we create comprehensive study notes for each chapter.' : 'Fetching your study materials...'}
+        </p>
+      </div>
+    );
+  }
 
   return (
     notes.length > 0 && (
