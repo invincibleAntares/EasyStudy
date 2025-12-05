@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, UserPlus, Settings, BookOpen } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import Image from 'next/image';
 import Header from '@/components/Header';
@@ -67,8 +67,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-     < div className='mx-auto mb-20 mt-32 max-w-5xl sm:mt-20'>
-        <div className='mb-12 px-6 lg:px-8'>
+     <div className='mx-auto mb-20 mt-32 max-w-7xl sm:mt-20 px-6 lg:px-8'>
+        <div className='mb-16'>
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='mt-2 font-bold text-4xl text-gray-900 sm:text-5xl'>
               Start your Preparation in minutes
@@ -78,50 +78,74 @@ export default function Home() {
             </p>
           </div>
         </div>
-        </div>
 
        {/* Steps */}
-       <ol className="my-12 space-y-8 pt-8 md:flex md:space-x-8 md:space-y-0">
+       <div className="relative">
+         {/* Connection line for desktop */}
+         <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-200 via-purple-200 to-blue-200"></div>
+         
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative">
   {[
     {
-      step: "Step 1",
+      step: "01",
       title: "Sign up for an account",
       description:
-        "Either start with a free plan or choose our ",
-      linkText: "pro plan",
-      linkHref: "/pricing",
+        "Either start with a free plan or choose our pro plan to unlock advanced features and unlimited access to study materials.",
+      icon: UserPlus,
+      color: "blue",
     },
     {
-      step: "Step 2",
-      title: "Choose your Type of prepration and difficulty level",
+      step: "02",
+      title: "Choose your Type of preparation and difficulty level",
       description:
-        "We'll process your Topic and make it ready for you to Learn with various Components.",
+        "We'll process your Topic and make it ready for you to Learn with various Components tailored to your needs.",
+      icon: Settings,
+      color: "purple",
     },
     {
-      step: "Step 3",
+      step: "03",
       title: "Start Your Preparation",
       description:
-        "It's that simple. Try out Easy Study today - it really takes less than a minute.",
+        "It's that simple. Try out Easy Study today  it really takes less than a minute to get started with your personalized study materials.",
+      icon: BookOpen,
+      color: "blue",
     },
-  ].map((item, index) => (
-    <li key={index} className="md:flex-1 flex">
-      <div className="flex flex-col h-full items-start space-y-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-md hover:shadow-lg transition-shadow md:items-center md:text-center">
-        <span className="text-lg font-medium text-blue-600">{item.step}</span>
-        <span className="text-2xl font-semibold text-zinc-800">{item.title}</span>
-        <span className="mt-2 text-lg text-zinc-600">
-          {item.description}
-          {item.linkText && (
-            <Link
-              href={item.linkHref}
-              className="text-blue-700 underline underline-offset-2 ml-1">
-              {item.linkText}
-            </Link>
-          )}
-        </span>
+  ].map((item, index) => {
+    const Icon = item.icon;
+    const colorClasses = {
+      blue: "bg-blue-500 text-blue-50 border-blue-200",
+      purple: "bg-purple-500 text-purple-50 border-purple-200",
+    };
+    return (
+      <div key={index} className="relative group">
+        {/* Step number badge */}
+        <div className={`absolute -top-4 left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full ${colorClasses[item.color as keyof typeof colorClasses]} border-4 border-white shadow-lg flex items-center justify-center text-xl font-bold z-10`}>
+          {item.step}
+        </div>
+        
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 pt-12 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 h-full">
+          {/* Icon */}
+          <div className={`mb-6 w-16 h-16 rounded-xl ${item.color === 'blue' ? 'bg-blue-50' : 'bg-purple-50'} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+            <Icon className={`w-8 h-8 ${item.color === 'blue' ? 'text-blue-600' : 'text-purple-600'}`} strokeWidth={2} />
+          </div>
+          
+          {/* Title */}
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            {item.title}
+          </h3>
+          
+          {/* Description */}
+          <p className="text-gray-600 leading-relaxed">
+            {item.description}
+          </p>
+        </div>
       </div>
-    </li>
-  ))}
-</ol>
+    );
+  })}
+</div>
+</div>
+</div>
     <Footer/>
 
     </>
